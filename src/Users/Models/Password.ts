@@ -9,8 +9,14 @@ export class Password extends StringValueObject {
   }
 
   public async getPasswordHash(): Promise<string> {
-    const passwordHash = await bcryptjs.hash(this.value, 15)
+    const passwordHash = await bcryptjs.hash(this.value, 12)
     return passwordHash
+  }
+
+  public async comparePassword(passwordToCompare: string): Promise<boolean> {
+    const isEqual = await bcryptjs.compare(this.value, passwordToCompare)
+
+    return isEqual
   }
 
   private ensureLenghtIsLessThan25Charters(value: string): void {

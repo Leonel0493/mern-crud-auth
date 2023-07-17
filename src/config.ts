@@ -4,4 +4,4 @@ import 'dotenv/config'
 export const PORT = process.env.PORT_FOR_MERN_AUTH || 3000
 
 // * export mongoose connection string
-export const CONNECTION_STIRNG = 'mongodb://localhost/merndb'
+export const CONNECTION_STIRNG = 'mongodb://127.0.0.1/merndb'
