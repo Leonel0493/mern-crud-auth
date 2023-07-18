@@ -33,15 +33,18 @@ export const UserSave = async (
 
     res.cookie('token', userToken)
 
-    res.status(200).json({
+    return res.status(200).json({
       id: userSaved.id,
       username: userSaved.username,
       email: userSaved.email,
     })
   } catch (error) {
-    console.error('Error on save user: ', error)
-    res.status(500).json({ error: 'User not saved' })
+    return res.status(500).json({ error: 'User not saved' })
   }
+}
+
+export const UserProfile = (_req: Request, res: Response) => {
+  res.send('Profile')
 }
 
 export const SearchUser = async ({

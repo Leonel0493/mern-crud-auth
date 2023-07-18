@@ -20,7 +20,7 @@ export const UserAuth = async (
     const userFound = await SearchUser({ email: userEmail })
 
     if ('type' in userFound && userFound.type === 'NOT_FOUND_USER') {
-      res.status(400).json({ message: 'User not found' })
+      return res.status(400).json({ message: 'User not found' })
     }
 
     const _user: IUser = userFound as IUser
@@ -28,20 +28,24 @@ export const UserAuth = async (
     const pwdMatch = await userPassword.comparePassword(_user.password)
 
     if (!pwdMatch) {
-      res.status(400).json({ message: 'Incorrect password' })
+      return res.status(400).json({ message: 'Incorrect password' })
     }
 
     const jwt = new TokenGenerator(_user.id)
     const userToken = await jwt.getJWT()
 
     res.cookie('token', userToken)
-    res.status(200).json({
+    return res.status(200).json({
       id: _user.id,
       username: _user.username,
       email: _user.email,
     })
   } catch (error) {
-    console.error('Error on save user: ', error)
-    res.status(500).json({ error: 'User not saved' })
+    return res.status(500).json({ error: 'Error on login.' })
   }
+}
+
+export const Logout = (_req: Request, res: Response) => {
+  res.cookie('token', '', { expires: new Date(0) })
+  return res.sendStatus(200)
 }
